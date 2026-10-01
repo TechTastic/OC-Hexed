@@ -1,0 +1,245 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'net.neoforged.moddev' version '2.0.148'
+    id 'idea'
+}
+
+tasks.named('wrapper', Wrapper).configure {
+    distributionType = Wrapper.DistributionType.BIN
+}
+
+version = mod_version
+group = mod_group_id
+
+sourceSets.main.resources {
+    srcDir('src/generated/resources')
+
+    exclude("src/generated/**/.cache")
+}
+
+repositories {
+    exclusiveContent {
+        forRepository {
+            flatDir {
+                dirs 'libs'
+            }
+        }
+        filter {
+            includeGroup "at.petra-k.hexcasting"
+        }
+    }
+
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'Kotlin for Forge'
+                url = 'https://thedarkcolour.github.io/KotlinForForge/'
+            }
+        }
+        filter {
+            includeGroup "thedarkcolour"
+        }
+    }
+
+    exclusiveContent {
+        forRepository {
+            maven { url 'https://maven.blamejared.com' }
+        }
+        filter {
+            includeGroup "at.petra-k"
+            includeGroup "vazkii.patchouli"
+            includeGroup "com.samsthenerd.inline"
+        }
+    }
+
+    exclusiveContent {
+        forRepository {
+            maven { url 'https://maven.wispforest.io/releases' }
+        }
+        filter {
+            includeGroup "io.wispforest"
+            includeGroup "io.wispforest.endec"
+        }
+    }
+
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "C4's Maven"
+                url = "https://maven.theillusivec4.top/"
+            }
+        }
+        filter {
+            includeGroup "com.illusivesoulworks.caelus"
+        }
+    }
+
+    exclusiveContent {
+        forRepository {
+            maven { url = "https://maven.michiyo.me/releases/" }
+        }
+        filter {
+            includeGroup "li.cil.oc"
+            includeGroup "dev.architectury"
+        }
+    }
+
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "kotori316"
+                url = uri("https://maven.kotori316.com")
+            }
+        }
+        filter {
+            includeGroup "com.kotori316"
+        }
+    }
+
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "RyanHCode Maven"
+                url = "https://maven.ryanhcode.dev/releases"
+            }
+        }
+        filter {
+            includeGroup "dev.ryanhcode.sable-companion"
+        }
+    }
+
+    exclusiveContent {
+        forRepository {
+            maven { url "https://maven.shedaniel.me/" }
+        }
+        filter {
+            includeGroup "me.shedaniel.cloth"
+        }
+    }
+
+    exclusiveContent {
+        forRepository {
+            maven { url "https://maven.sinytra.org" }
+        }
+        filter {
+            includeGroup "org.sinytra.forgified-fabric-api"
+            includeGroup "org.sinytra"
+        }
+    }
+}
+
+base {
+    archivesName = mod_id
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+neoForge {
+    version = project.neo_version
+
+    parchment {
+        mappingsVersion = project.parchment_mappings_version
+        minecraftVersion = project.parchment_minecraft_version
+    }
+
+    runs {
+        client {
+            client()
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        server {
+            server()
+            programArgument '--nogui'
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        gameTestServer {
+            type = "gameTestServer"
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        data {
+            data()
+            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+        }
+
+        configureEach {
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+
+            logLevel = org.slf4j.event.Level.DEBUG
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
+        }
+    }
+}
+
+configurations {
+    runtimeClasspath.extendsFrom localRuntime
+}
+
+dependencies {
+    implementation("li.cil.oc:opencomputers:$opencomputers_version") { transitive = false }
+    runtimeOnly("com.kotori316:scalablecatsforce-neoforge:$scalablecatsforce_version:with-library") { transitive = false }
+
+    implementation("vazkii.patchouli:Patchouli:$minecraft_version-$patchouli_version-NEOFORGE")
+    implementation("at.petra-k.hexcasting:hexcasting-neoforge-$minecraft_version:$hexcasting_version")
+    implementation("at.petra-k:paucal:$paucal_version+$minecraft_version-neoforge")
+    runtimeOnly("com.samsthenerd.inline:inline-neoforge:$minecraft_version-$inline_version")
+    runtimeOnly("dev.architectury:architectury-neoforge:$architectury_api_version")
+    runtimeOnly("io.wispforest:accessories-neoforge:$accessories_version+$minecraft_version") { transitive = false }
+    runtimeOnly "io.wispforest:owo-lib-neoforge:$owo_version"
+    runtimeOnly "org.sinytra.forgified-fabric-api:forgified-fabric-api:$fabric_api_version"
+
+    runtimeOnly("thedarkcolour:kotlinforforge-neoforge:$kff_version")
+    runtimeOnly("com.illusivesoulworks.caelus:caelus-neoforge:$caelus_version+$minecraft_version")
+    compileOnly("com.illusivesoulworks.caelus:caelus-neoforge:$caelus_version+$minecraft_version:api")
+}
+
+var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+    var replaceProperties = [
+            minecraft_version      : minecraft_version,
+            minecraft_version_range: minecraft_version_range,
+            neo_version            : neo_version,
+            loader_version_range   : loader_version_range,
+            mod_id                 : mod_id,
+            mod_name               : mod_name,
+            mod_license            : mod_license,
+            mod_version            : mod_version,
+    ]
+    inputs.properties replaceProperties
+    expand replaceProperties
+    from "src/main/templates"
+    into "build/generated/sources/modMetadata"
+}
+sourceSets.main.resources.srcDir generateModMetadata
+neoForge.ideSyncTask generateModMetadata
+
+publishing {
+    publications {
+        register('mavenJava', MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url "file://${project.projectDir}/repo"
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8' 
+}
+
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
+}
