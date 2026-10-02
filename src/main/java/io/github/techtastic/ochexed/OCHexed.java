@@ -2,7 +2,9 @@ package io.github.techtastic.ochexed;
 
 import io.github.techtastic.ochexed.init.OCHIotas;
 import io.github.techtastic.ochexed.oc.architecture.HexcastingArchitecture;
+import io.github.techtastic.ochexed.oc.driver.HexItemDriver;
 import li.cil.oc.api.API;
+import li.cil.oc.api.Driver;
 import li.cil.oc.api.FileSystem;
 import li.cil.oc.api.Machine;
 import li.cil.oc.api.machine.Architecture;
@@ -34,6 +36,7 @@ public class OCHexed {
     private void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             //Driver.add(new MindspliceDriver());
+            Driver.add(new HexItemDriver());
 
             Machine.add(HexcastingArchitecture.class);
         });

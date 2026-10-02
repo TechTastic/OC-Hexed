@@ -1,24 +1,21 @@
 package io.github.techtastic.ochexed.oc.architecture;
 
+import at.petrak.hexcasting.api.addldata.ADIotaHolder;
 import at.petrak.hexcasting.api.casting.eval.CastResult;
-import at.petrak.hexcasting.api.casting.eval.sideeffects.OperatorSideEffect;
+import at.petrak.hexcasting.api.casting.eval.vm.CastingImage;
 import at.petrak.hexcasting.api.casting.eval.vm.CastingVM;
-import at.petrak.hexcasting.api.casting.eval.vm.ContinuationFrame;
 import at.petrak.hexcasting.api.casting.eval.vm.FrameEvaluate;
 import at.petrak.hexcasting.api.casting.eval.vm.SpellContinuation;
-import at.petrak.hexcasting.api.casting.iota.ContinuationIota;
 import at.petrak.hexcasting.api.casting.iota.Iota;
 import at.petrak.hexcasting.api.casting.iota.PatternIota;
 import at.petrak.hexcasting.api.utils.TreeList;
-import at.petrak.hexcasting.common.casting.actions.spells.OpFlight;
 import at.petrak.hexcasting.common.lib.hex.HexActions;
-import io.github.techtastic.ochexed.util.NBTUtils;
+import at.petrak.hexcasting.xplat.IXplatAbstractions;
 import li.cil.oc.api.machine.Architecture;
 import li.cil.oc.api.machine.ExecutionResult;
 import li.cil.oc.api.machine.Machine;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
@@ -36,8 +33,14 @@ public class HexcastingArchitecture implements Architecture {
         this.machine = machine;
     }
 
-    private TreeList<Iota> loadInitialProgram() {
-        return TreeList.from(List.of(new PatternIota(HexActions.GET_CASTER.value().prototype()), new PatternIota(HexActions.PRINT.value().prototype())));
+    private Iota loadInitialProgram() {
+        for (ItemStack stack : this.machine.host().internalComponents()) {
+            ADIotaHolder holder = IXplatAbstractions.INSTANCE.findDataHolder(stack);
+            if (holder != null) {
+                return holder.readIota();
+            }
+        }
+        return null;
     }
 
     @Override
@@ -52,9 +55,15 @@ public class HexcastingArchitecture implements Architecture {
 
     @Override
     public boolean initialize() {
-        this.vm = CastingVM.empty(new ArchitectureCastEnv(this.machine));
-        this.continuation = SpellContinuation.Done.INSTANCE.pushFrame(new FrameEvaluate(TreeList.from(loadInitialProgram()), false));
-        return true;
+        Iota program = loadInitialProgram();
+        if (program != null) {
+            this.vm = CastingVM.empty(new ArchitectureCastEnv(this.machine));
+            this.vm.getImage().getStack().add(program);
+            this.continuation = SpellContinuation.Done.INSTANCE.pushFrame(new FrameEvaluate(
+                    TreeList.from(List.of(new PatternIota(HexActions.EVAL.value().prototype()))), false));
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -111,15 +120,20 @@ public class HexcastingArchitecture implements Architecture {
     public void loadData(CompoundTag nbt) {
         if (this.vm == null)
             this.vm = CastingVM.empty(new ArchitectureCastEnv(this.machine));
-        this.vm.setImage(NBTUtils.fromNBT(nbt));
+
+        CastingImage.getCODEC().decode(NbtOps.INSTANCE, nbt.getCompound("image"))
+                .ifSuccess(p -> this.vm.setImage(p.getFirst()));
         SpellContinuation.getCODEC().decode(NbtOps.INSTANCE, nbt.getCompound("continuation"))
                 .ifSuccess(p -> this.continuation = p.getFirst());
     }
 
     @Override
     public void saveData(CompoundTag nbt) {
-        if (this.vm != null) NBTUtils.toNBT(this.vm.getImage(), nbt);
-        if (this.continuation != null) SpellContinuation.getCODEC().encodeStart(NbtOps.INSTANCE, this.continuation)
+        if (this.vm != null)
+            CastingImage.getCODEC().encodeStart(NbtOps.INSTANCE, this.vm.getImage())
+                .ifSuccess(t -> nbt.put("image", t));
+        if (this.continuation != null)
+            SpellContinuation.getCODEC().encodeStart(NbtOps.INSTANCE, this.continuation)
                 .ifSuccess(t -> nbt.put("continuation", t));
     }
 }
