@@ -13,9 +13,19 @@ Still sifting through OC:R's Scala implementation and new areas of Hexcasting I 
 - [ ] Mixin into base patterns to allow for debugging and using the usual patterns
 - [ ] Make new patterns for interacting with OC's components and APIs
   - [X] Temporarily create `StringIota` until *MoreIotas* ports since all components are addressed and have string methods
-  - [ ] Components API and Patterns
+  - [X] Components API and Patterns
   - [ ] OS API and Patterns
   - [ ] Filesystem API and Patterns (again, likely fake filesystem to read Hexes as NBT files from in-game Hex Holders)
   - [ ] Computer API and Patterns
 - [ ] Pattern Blacklist for certain patterns (*we all know it will happen*)
 - [ ] Create "HexOS" (or maybe just an interpreter, likely using the screen to "draw")
+
+## Potential Patterns
+- [X] List Components
+- [X] Get Component Type
+- [X] Find Component
+- [X] Get Component Methods
+- [X] Invoke
+
+- [X] Pop Signal
+- [X] Push Signal

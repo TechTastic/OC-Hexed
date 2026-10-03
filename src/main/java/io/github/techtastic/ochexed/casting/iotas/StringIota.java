@@ -47,7 +47,7 @@ public class StringIota extends Iota {
         }
     };
 
-    protected StringIota(String value) {
+    public StringIota(String value) {
         super(OCHIotas.STRING::get);
         this.value = value;
     }

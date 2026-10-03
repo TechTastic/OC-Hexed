@@ -36,9 +36,8 @@ public class HexcastingArchitecture implements Architecture {
     private Iota loadInitialProgram() {
         for (ItemStack stack : this.machine.host().internalComponents()) {
             ADIotaHolder holder = IXplatAbstractions.INSTANCE.findDataHolder(stack);
-            if (holder != null) {
+            if (holder != null)
                 return holder.readIota();
-            }
         }
         return null;
     }
