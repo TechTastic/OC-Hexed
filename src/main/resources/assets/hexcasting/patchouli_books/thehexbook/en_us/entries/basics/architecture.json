@@ -1,0 +1,25 @@
+{
+  "name": "ochexed.entry.architecture.basics",
+  "icon": "opencomputers:cpu2",
+  "category": "hexcasting:basics",
+  "advancement": "hexcasting:root",
+  "sortnum": 20,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "ochexed.page.basics.architecture.intro"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "ochxed.title.basics.architecture.component",
+      "anchor": "ochexed:page/component",
+      "text": "ochexed.page.basics.architecture.component"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "ochxed.title.basics.architecture.signal",
+      "anchor": "ochexed:page/signal",
+      "text": "ochexed.page.basics.architecture.signal"
+    }
+  ]
+}

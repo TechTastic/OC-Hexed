@@ -1,0 +1,65 @@
+{
+  "name": "ochexed.entry.architecture.patterns",
+  "icon": "opencomputers:cpu3",
+  "category": "hexcasting:patterns",
+  "advancement": "hexcasting:root",
+  "sortnum": 20,
+  "pages": [
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "ochexed:list_component",
+      "anchor": "ochexed:list_component",
+      "input": "",
+      "output": "[address]",
+      "text": "ochexed.page.architecture.patterns.component.list"
+    },
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "ochexed:get_component_type",
+      "anchor": "ochexed:get_component_type",
+      "input": "address",
+      "output": "type",
+      "text": "ochexed.page.architecture.patterns.component.type"
+    },
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "ochexed:get_component_methods",
+      "anchor": "ochexed:get_component_methods",
+      "input": "address",
+      "output": "[method]",
+      "text": "ochexed.page.architecture.patterns.component.methods"
+    },
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "ochexed:find_component",
+      "anchor": "ochexed:find_component",
+      "input": "type",
+      "output": "[address]",
+      "text": "ochexed.page.architecture.patterns.component.find"
+    },
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "ochexed:component_invoke",
+      "anchor": "ochexed:component_invoke",
+      "input": "address, method, [any]",
+      "output": "[any]",
+      "text": "ochexed.page.architecture.patterns.component.invoke"
+    },
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "ochexed:pop_signal",
+      "anchor": "ochexed:pop_signal",
+      "input": "",
+      "output": "(name, [any]) | null",
+      "text": "ochexed.page.architecture.patterns.signal.pop"
+    },
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "ochexed:push_signal",
+      "anchor": "ochexed:oush_signal",
+      "input": "name, [any]",
+      "output": "bool",
+      "text": "ochexed.page.architecture.patterns.signal.push"
+    }
+  ]
+}

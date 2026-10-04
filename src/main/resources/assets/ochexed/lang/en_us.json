@@ -1,0 +1,29 @@
+{
+  "tab.ochexed.manual": "OC: Hexed",
+
+  "ochexed.mishap.not_computer": "This pattern was used outside of a OpenComputers computer and outside of its Architecture!",
+
+  "ochexed.entry.architecture.basics": "Computer Architecture Basics",
+  "ochexed.page.basics.architecture.intro": "TBD Intro",
+  "ochexed.title.basics.architecture.component": "Components",
+  "ochexed.page.basics.architecture.component": "TBD Component API Explanation",
+  "ochexed.title.basics.architecture.signal": "Signals",
+  "ochexed.page.basics.architecture.signal": "TBD Signal API Explanation",
+
+  "ochexed.entry.architecture.patterns": "Architectural Patterns",
+  "hexcasting.action.ochexed:list_component": "Michiyo's Reflection",
+  "ochexed.page.architecture.patterns.component.list": "Lists the addresses of all available components",
+  "hexcasting.action.ochexed:find_component": "Michiyo's Purification III",
+  "ochexed.page.architecture.patterns.component.find": "Finds the addresses of all available components matching the given type",
+  "hexcasting.action.ochexed:get_component_type": "Michiyo's Purification",
+  "ochexed.page.architecture.patterns.component.type": "Gets the type of the component at the given address",
+  "hexcasting.action.ochexed:get_component_methods": "Michiyo's Purification II",
+  "ochexed.page.architecture.patterns.component.methods": "Gets the methods of the component at the given address",
+  "hexcasting.action.ochexed:component_invoke": "Michiyo's Exaltation",
+  "ochexed.page.architecture.patterns.component.invoke": "Invokes the given method of the component at the given address and returns its' results",
+
+  "hexcasting.action.ochexed:pop_signal": "Sangar's Gambit",
+  "ochexed.page.architecture.patterns.signal.pop": "Pops a signal off of the internal signal stack as a name and list of arguments or null if no signals exist",
+  "hexcasting.action.ochexed:push_signal": "Sangar's Distillation",
+  "ochexed.page.architecture.patterns.signal.push": "Pushes a signal onto the internal signal stack as the given name and list of arguments, returning a boolean indicating success"
+}

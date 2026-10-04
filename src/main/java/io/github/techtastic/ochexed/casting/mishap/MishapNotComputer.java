@@ -22,6 +22,6 @@ public class MishapNotComputer extends Mishap {
 
     @Override
     protected @Nullable Component errorMessage(@NotNull CastingEnvironment castingEnvironment, @NotNull Mishap.Context context) {
-        return Component.translatable("mishap.ochexed.not_computer");
+        return Component.translatable("ochexed.mishap.not_computer");
     }
 }

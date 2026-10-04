@@ -5,6 +5,7 @@ import io.github.techtastic.ochexed.init.OCHActions;
 import io.github.techtastic.ochexed.oc.architecture.HexcastingArchitecture;
 import io.github.techtastic.ochexed.oc.driver.HexItemDriver;
 import io.github.techtastic.ochexed.oc.gui.HexPatternImageProvider;
+import io.github.techtastic.ochexed.oc.gui.PatchouliImageProvider;
 import li.cil.oc.api.*;
 import li.cil.oc.api.prefab.ResourceContentProvider;
 import net.minecraft.world.item.ItemStack;
@@ -47,10 +48,10 @@ public class OCHexed {
         private static void commonSetup(FMLCommonSetupEvent event) {
             event.enqueueWork( () -> {
                 Manual.addProvider("hexpattern", new HexPatternImageProvider());
+                Manual.addProvider("patchouli", new PatchouliImageProvider());
 
                 Manual.addProvider(new ResourceContentProvider(MODID, "doc/"));
                 Manual.addTab(graphics -> graphics.renderFakeItem(new ItemStack(HexItems.FOCUS.get()), 0, 0), "tab.ochexed.manual", "ochexed/%LANGUAGE%/index.md");
-
             /*
             li.cil.oc.api.Items.registerStack(Items.SABLE_UPGRADE.toStack(), "", Constants.SectionName$.MODULE$.Component());
 

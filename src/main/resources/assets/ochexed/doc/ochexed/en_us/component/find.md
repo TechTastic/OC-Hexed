@@ -1,0 +1,1 @@
+![Link to Hexcasting Manual...](patchouli:hexcasting:thehexbook:hexcasting:patterns/architecture:3)

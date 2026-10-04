@@ -3,6 +3,7 @@ package io.github.techtastic.ochexed.casting.actions.signal;
 import at.petrak.hexcasting.api.casting.castables.ConstMediaAction;
 import at.petrak.hexcasting.api.casting.eval.CastingEnvironment;
 import at.petrak.hexcasting.api.casting.iota.Iota;
+import at.petrak.hexcasting.api.casting.iota.ListIota;
 import at.petrak.hexcasting.api.casting.iota.NullIota;
 import at.petrak.hexcasting.api.casting.mishaps.Mishap;
 import io.github.techtastic.ochexed.casting.mishap.MishapNotComputer;
@@ -28,8 +29,7 @@ public class OpPopSignal implements ConstMediaAction {
             if (signal == null)
                 return List.of(new NullIota());
             List<Iota> args = Arrays.stream(signal.args()).map(IotaConversion::toIota).toList();
-            args.addFirst(StringIota.make(signal.name()));
-            return args;
+            return List.of(StringIota.make(signal.name()), new ListIota(args));
         }
         throw new MishapNotComputer();
     }

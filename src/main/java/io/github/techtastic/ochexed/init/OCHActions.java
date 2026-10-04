@@ -21,26 +21,26 @@ public class OCHActions {
 
     // List Components
     public static final DeferredHolder<ActionRegistryEntry, ActionRegistryEntry> LIST_COMPONENT = ACTIONS.register("list_component", () ->
-            new ActionRegistryEntry(HexPattern.fromAngleString("dwdqdwdawadeeed", HexDir.EAST), new OpListComponents()));
+            new ActionRegistryEntry(HexPattern.fromAngleString("qqqqaawadeeed", HexDir.WEST), new OpListComponents()));
     // Get Component Type
     public static final DeferredHolder<ActionRegistryEntry, ActionRegistryEntry> GET_COMPONENT_TYPE = ACTIONS.register("get_component_type", () ->
-            new ActionRegistryEntry(HexPattern.fromAngleString("dwdqdwdawadeeedewadeeed", HexDir.EAST), new OpGetComponentType()));
+            new ActionRegistryEntry(HexPattern.fromAngleString("qqqqaawadeeedewadeeed", HexDir.WEST), new OpGetComponentType()));
     // Find Component
     public static final DeferredHolder<ActionRegistryEntry, ActionRegistryEntry> FIND_COMPONENT = ACTIONS.register("find_component", () ->
-            new ActionRegistryEntry(HexPattern.fromAngleString("dwdqdwdawadeeede", HexDir.EAST), new OpListComponents()));
+            new ActionRegistryEntry(HexPattern.fromAngleString("qqqqaawadeeede", HexDir.WEST), new OpListComponents()));
     // Get Methods
     public static final DeferredHolder<ActionRegistryEntry, ActionRegistryEntry> GET_COMPONENT_METHODS = ACTIONS.register("get_component_methods", () ->
-            new ActionRegistryEntry(HexPattern.fromAngleString("dwdqdwdaqqqa", HexDir.EAST), new OpGetComponentMethods()));
+            new ActionRegistryEntry(HexPattern.fromAngleString("qqqaawqqqae", HexDir.WEST), new OpGetComponentMethods()));
     // Invoke
     public static final DeferredHolder<ActionRegistryEntry, ActionRegistryEntry> COMPONENT_INVOKE = ACTIONS.register("component_invoke", () ->
-            new ActionRegistryEntry(HexPattern.fromAngleString("dwdqdwdawadeadedaed", HexDir.EAST), new OpComponentInvoke()));
+            new ActionRegistryEntry(HexPattern.fromAngleString("qqqqaawadeadedaed", HexDir.WEST), new OpComponentInvoke()));
 
     // Pop Signal
     public static final DeferredHolder<ActionRegistryEntry, ActionRegistryEntry> POP_SIGNAL = ACTIONS.register("pop_signal", () ->
-            new ActionRegistryEntry(HexPattern.fromAngleString("dwdqdwdaeaqa", HexDir.EAST), new OpPopSignal()));
+            new ActionRegistryEntry(HexPattern.fromAngleString("qqqqaaweaqa", HexDir.WEST), new OpPopSignal()));
     // Push Signal
     public static final DeferredHolder<ActionRegistryEntry, ActionRegistryEntry> PUSH_SIGNAL = ACTIONS.register("push_signal", () ->
-            new ActionRegistryEntry(HexPattern.fromAngleString("dwdqdwdaqded", HexDir.EAST), new OpPushSignal()));
+            new ActionRegistryEntry(HexPattern.fromAngleString("qqqqaawqded", HexDir.WEST), new OpPushSignal()));
 
     public static void register(IEventBus bus) {
         ACTIONS.register(bus);
