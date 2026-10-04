@@ -27,6 +27,7 @@ repositories {
         }
         filter {
             includeGroup "at.petra-k.hexcasting"
+            includeGroup "ram.talia.moreiotas"
         }
     }
 
@@ -199,6 +200,8 @@ dependencies {
     runtimeOnly("thedarkcolour:kotlinforforge-neoforge:$kff_version")
     runtimeOnly("com.illusivesoulworks.caelus:caelus-neoforge:$caelus_version+$minecraft_version")
     compileOnly("com.illusivesoulworks.caelus:caelus-neoforge:$caelus_version+$minecraft_version:api")
+
+    implementation("ram.talia.moreiotas:moreiotas-$moreiotas_version+$minecraft_version-neoforge:pre53")
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {

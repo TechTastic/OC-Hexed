@@ -1,13 +1,13 @@
 package io.github.techtastic.ochexed;
 
-import io.github.techtastic.ochexed.init.OCHIotas;
+import at.petrak.hexcasting.common.lib.HexItems;
+import io.github.techtastic.ochexed.init.OCHActions;
 import io.github.techtastic.ochexed.oc.architecture.HexcastingArchitecture;
 import io.github.techtastic.ochexed.oc.driver.HexItemDriver;
-import li.cil.oc.api.API;
-import li.cil.oc.api.Driver;
-import li.cil.oc.api.FileSystem;
-import li.cil.oc.api.Machine;
-import li.cil.oc.api.machine.Architecture;
+import io.github.techtastic.ochexed.oc.gui.HexPatternImageProvider;
+import li.cil.oc.api.*;
+import li.cil.oc.api.prefab.ResourceContentProvider;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -30,12 +30,11 @@ public class OCHexed {
     public OCHexed(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
 
-        OCHIotas.register(modEventBus);
+        OCHActions.register(modEventBus);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            //Driver.add(new MindspliceDriver());
             Driver.add(new HexItemDriver());
 
             Machine.add(HexcastingArchitecture.class);
@@ -47,6 +46,11 @@ public class OCHexed {
         @SubscribeEvent
         private static void commonSetup(FMLCommonSetupEvent event) {
             event.enqueueWork( () -> {
+                Manual.addProvider("hexpattern", new HexPatternImageProvider());
+
+                Manual.addProvider(new ResourceContentProvider(MODID, "doc/"));
+                Manual.addTab(graphics -> graphics.renderFakeItem(new ItemStack(HexItems.FOCUS.get()), 0, 0), "tab.ochexed.manual", "ochexed/%LANGUAGE%/index.md");
+
             /*
             li.cil.oc.api.Items.registerStack(Items.SABLE_UPGRADE.toStack(), "", Constants.SectionName$.MODULE$.Component());
 
