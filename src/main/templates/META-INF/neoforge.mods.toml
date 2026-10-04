@@ -38,3 +38,24 @@ config="${mod_id}.mixins.json"
     versionRange="${minecraft_version_range}"
     ordering="NONE"
     side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="opencomputers"
+    type="required"
+    versionRange="${opencomputers_version_range}"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="hexcasting"
+    type="required"
+    versionRange="${hexcasting_version_range}"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="moreiotas"
+    type="required"
+    versionRange="${moreiotas_version_range}"
+    ordering="NONE"
+    side="BOTH"
