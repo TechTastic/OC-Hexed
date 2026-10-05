@@ -29,7 +29,7 @@ public class HexcastingArchitecture implements Architecture {
 
     private CastingVM vm;
     private SpellContinuation continuation;
-    private long maxStackSize;
+    private long maxStackSize = 0;
 
     private String error;
 
@@ -57,6 +57,7 @@ public class HexcastingArchitecture implements Architecture {
 
     @Override
     public boolean recomputeMemory(Iterable<ItemStack> components) {
+        this.maxStackSize = 0;
         components.forEach(stack -> this.maxStackSize += Driver.driverFor(stack) instanceof Memory mem ? ((Double) mem.amount(stack)).longValue() : 0L);
         return this.maxStackSize >= 256;
     }
