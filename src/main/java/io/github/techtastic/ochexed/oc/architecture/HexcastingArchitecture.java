@@ -29,7 +29,7 @@ public class HexcastingArchitecture implements Architecture {
 
     private CastingVM vm;
     private SpellContinuation continuation;
-    private long maxStackSize = 0;
+    private long maxStackSize = 1024;
 
     private String error;
 
