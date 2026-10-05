@@ -3,6 +3,7 @@ package io.github.techtastic.ochexed;
 import at.petrak.hexcasting.common.lib.HexItems;
 import io.github.techtastic.ochexed.init.OCHActions;
 import io.github.techtastic.ochexed.oc.architecture.HexcastingArchitecture;
+import io.github.techtastic.ochexed.oc.convert.IoticConverter;
 import io.github.techtastic.ochexed.oc.driver.HexItemDriver;
 import io.github.techtastic.ochexed.oc.gui.HexPatternImageProvider;
 import io.github.techtastic.ochexed.oc.gui.PatchouliImageProvider;
@@ -37,6 +38,7 @@ public class OCHexed {
     private void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             Driver.add(new HexItemDriver());
+            Driver.add(new IoticConverter());
 
             Machine.add(HexcastingArchitecture.class);
         });
@@ -52,27 +54,6 @@ public class OCHexed {
 
                 Manual.addProvider(new ResourceContentProvider(MODID, "doc/"));
                 Manual.addTab(graphics -> graphics.renderFakeItem(new ItemStack(HexItems.FOCUS.get()), 0, 0), "tab.ochexed.manual", "ochexed/%LANGUAGE%/index.md");
-            /*
-            li.cil.oc.api.Items.registerStack(Items.SABLE_UPGRADE.toStack(), "", Constants.SectionName$.MODULE$.Component());
-
-            Manual.addProvider(new PathProvider() {
-                @Override
-                public String pathFor(ItemStack stack) {
-                    if (stack.is(Items.SABLE_UPGRADE.asItem()))
-                        return "ocsable";
-                    return null;
-                }
-
-                @Override
-                public String pathFor(Level world, BlockPos pos) {
-                    return null;
-                }
-            });
-
-            Manual.addProvider(new ResourceContentProvider(MODID, "doc/"));
-
-            Manual.addTab(graphics -> graphics.renderFakeItem(Items.SABLE_UPGRADE.toStack(), 0, 0), "tab.ocsable.manual", "ocsable/%LANGUAGE%/index.md");
-            */
             });
         }
     }

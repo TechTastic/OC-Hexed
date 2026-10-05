@@ -3,12 +3,15 @@ package io.github.techtastic.ochexed.oc.env;
 import at.petrak.hexcasting.api.addldata.ADMediaHolder;
 import at.petrak.hexcasting.xplat.IXplatAbstractions;
 import li.cil.oc.api.Network;
+import li.cil.oc.api.machine.Arguments;
+import li.cil.oc.api.machine.Callback;
+import li.cil.oc.api.machine.Context;
 import li.cil.oc.api.network.EnvironmentHost;
 import li.cil.oc.api.network.Visibility;
 import li.cil.oc.api.prefab.AbstractManagedEnvironment;
 import net.minecraft.world.item.ItemStack;
 
-public class MediaHolderEnvironment extends AbstractManagedEnvironment implements ADMediaHolder {
+public class MediaHolderEnvironment extends AbstractManagedEnvironment {
     private final EnvironmentHost host;
     private final ADMediaHolder holder;
 
@@ -21,47 +24,44 @@ public class MediaHolderEnvironment extends AbstractManagedEnvironment implement
                 .withConnector().create());
     }
 
-    @Override
-    public long getMedia() {
-        return this.holder.getMedia();
+    @Callback
+    public Object[] getMedia(final Context context, final Arguments args) {
+        return new Object[] { this.holder.getMedia() };
     }
 
-    @Override
-    public long getMaxMedia() {
-        return this.holder.getMaxMedia();
+    @Callback
+    public Object[] getMaxMedia(final Context context, final Arguments args) {
+        return new Object[] { this.holder.getMaxMedia() };
     }
 
-    @Override
     public void setMedia(long l) {
         this.holder.setMedia(l);
     }
 
-    @Override
-    public boolean canRecharge() {
-        return this.holder.canRecharge();
+    @Callback
+    public Object[] canRecharge(final Context context, final Arguments args) {
+        return new Object[] { this.holder.canRecharge() };
     }
 
-    @Override
-    public boolean canProvide() {
-        return this.holder.canProvide();
+    @Callback
+    public Object[] canProvide(final Context context, final Arguments args) {
+        return new Object[] { this.holder.canProvide() };
     }
 
-    @Override
-    public int getConsumptionPriority() {
-        return this.holder.getConsumptionPriority();
+    @Callback
+    public Object[] getConsumptionPriority(final Context context, final Arguments args) {
+        return new Object[] { this.holder.getConsumptionPriority() };
     }
 
-    @Override
-    public boolean canConstructBattery() {
-        return this.holder.canConstructBattery();
+    @Callback
+    public Object[] canConstructBattery() {
+        return new Object[] { this.holder.canConstructBattery() };
     }
 
-    @Override
     public long withdrawMedia(long cost, boolean simulate) {
         return this.holder.withdrawMedia(cost, simulate);
     }
 
-    @Override
     public long insertMedia(long amount, boolean simulate) {
         return this.holder.insertMedia(amount, simulate);
     }

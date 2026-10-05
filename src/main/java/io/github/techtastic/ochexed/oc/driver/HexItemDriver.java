@@ -7,6 +7,7 @@ import at.petrak.hexcasting.common.items.storage.ItemSpellbook;
 import io.github.techtastic.ochexed.oc.env.HexHolderEnvironment;
 import io.github.techtastic.ochexed.oc.env.IotaHolderEnvironment;
 import io.github.techtastic.ochexed.oc.env.MediaHolderEnvironment;
+import io.github.techtastic.ochexed.oc.env.SpellbookEnvironment;
 import li.cil.oc.common.Slot;
 import li.cil.oc.api.network.EnvironmentHost;
 import li.cil.oc.api.network.ManagedEnvironment;
@@ -29,6 +30,7 @@ public class HexItemDriver extends DriverItem {
             return null;
         String type = stack.getItem().getDescription().getString().toLowerCase();
         return switch (stack.getItem()) {
+            case ItemSpellbook s -> new SpellbookEnvironment(host, stack);
             case IotaHolderItem i -> new IotaHolderEnvironment(host, stack, type);
             case HexHolderItem h -> new HexHolderEnvironment(host, stack, type);
             case MediaHolderItem m -> new MediaHolderEnvironment(host, stack, type);

@@ -11,6 +11,8 @@ import at.petrak.hexcasting.api.casting.iota.PatternIota;
 import at.petrak.hexcasting.api.utils.TreeList;
 import at.petrak.hexcasting.common.lib.hex.HexActions;
 import at.petrak.hexcasting.xplat.IXplatAbstractions;
+import li.cil.oc.api.Driver;
+import li.cil.oc.api.driver.item.Memory;
 import li.cil.oc.api.machine.Architecture;
 import li.cil.oc.api.machine.ExecutionResult;
 import li.cil.oc.api.machine.Machine;
@@ -27,6 +29,8 @@ public class HexcastingArchitecture implements Architecture {
 
     private CastingVM vm;
     private SpellContinuation continuation;
+    private long maxStackSize;
+
     private String error;
 
     public HexcastingArchitecture(Machine machine) {
@@ -42,6 +46,10 @@ public class HexcastingArchitecture implements Architecture {
         return null;
     }
 
+    public long getMaxStackSize() {
+        return this.maxStackSize;
+    }
+
     @Override
     public boolean isInitialized() {
         return this.vm != null;
@@ -49,7 +57,8 @@ public class HexcastingArchitecture implements Architecture {
 
     @Override
     public boolean recomputeMemory(Iterable<ItemStack> components) {
-        return true;
+        components.forEach(stack -> this.maxStackSize += Driver.driverFor(stack) instanceof Memory mem ? ((Double) mem.amount(stack)).longValue() : 0L);
+        return this.maxStackSize >= 256;
     }
 
     @Override
@@ -57,7 +66,7 @@ public class HexcastingArchitecture implements Architecture {
         Iota program = loadInitialProgram();
         if (program != null) {
             this.vm = CastingVM.empty(new ArchitectureCastEnv(this.machine));
-            this.vm.getImage().getStack().add(program);
+            this.vm.setImage(new CastingImage(TreeList.from(List.of(program)), this.vm.getImage().getParenCount(), this.vm.getImage().getParenthesized(), this.vm.getImage().getEscapeNext(), this.vm.getImage().getSimulateNext(), this.vm.getImage().getOpsConsumed(), this.vm.getImage().getComponents()));
             this.continuation = SpellContinuation.Done.INSTANCE.pushFrame(new FrameEvaluate(
                     TreeList.from(List.of(new PatternIota(HexActions.EVAL.value().prototype()))), false));
             return true;
