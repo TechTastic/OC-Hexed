@@ -1,10 +1,10 @@
 package io.github.techtastic.ochexed.oc.architecture;
 
-import li.cil.oc.api.machine.Machine;
+import li.cil.oc.api.component.RackMountable;
+import li.cil.oc.api.internal.*;
+import li.cil.oc.api.machine.*;
 import li.cil.oc.api.Network;
-import li.cil.oc.api.machine.Arguments;
-import li.cil.oc.api.machine.Callback;
-import li.cil.oc.api.machine.Context;
+import li.cil.oc.api.network.EnvironmentHost;
 import li.cil.oc.api.network.Visibility;
 import li.cil.oc.api.prefab.AbstractManagedEnvironment;
 import net.minecraft.world.phys.Vec3;
@@ -51,5 +51,35 @@ public class OSEnvironment extends AbstractManagedEnvironment {
     @Callback
     public Object[] isEnlightened(final Context context, final Arguments arguments) {
         return new Object[] { getArchitecture().isEnlightened() };
+    }
+
+    @Callback
+    public Object[] isDrone(final Context context, final Arguments arguments) {
+        return new Object[] { this.machine.host() instanceof Drone };
+    }
+
+    @Callback
+    public Object[] isRobot(final Context context, final Arguments arguments) {
+        return new Object[] { this.machine.host() instanceof Robot };
+    }
+
+    @Callback
+    public Object[] isCase(final Context context, final Arguments arguments) {
+        return new Object[] { this.machine.host() instanceof Case };
+    }
+
+    @Callback
+    public Object[] isServer(final Context context, final Arguments arguments) {
+        return new Object[] { this.machine.host() instanceof Server };
+    }
+
+    @Callback
+    public Object[] isMicrocontroller(final Context context, final Arguments arguments) {
+        return new Object[] { this.machine.host() instanceof Microcontroller };
+    }
+
+    @Callback
+    public Object[] isTablet(final Context context, final Arguments arguments) {
+        return new Object[] { this.machine.host() instanceof Tablet };
     }
 }
