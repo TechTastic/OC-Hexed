@@ -94,6 +94,7 @@ public class ArchitectureCastEnv extends CastingEnvironment {
 
     @Override
     public void printMessage(Component component) {
+        this.machine.signal("print", component.getString());
         System.out.println(component.getString());
     }
 }

@@ -2,12 +2,14 @@ package io.github.techtastic.ochexed.oc.architecture;
 
 import at.petrak.hexcasting.api.addldata.ADIotaHolder;
 import at.petrak.hexcasting.api.casting.eval.CastResult;
+import at.petrak.hexcasting.api.casting.eval.sideeffects.OperatorSideEffect;
 import at.petrak.hexcasting.api.casting.eval.vm.CastingImage;
 import at.petrak.hexcasting.api.casting.eval.vm.CastingVM;
 import at.petrak.hexcasting.api.casting.eval.vm.FrameEvaluate;
 import at.petrak.hexcasting.api.casting.eval.vm.SpellContinuation;
 import at.petrak.hexcasting.api.casting.iota.Iota;
 import at.petrak.hexcasting.api.casting.iota.PatternIota;
+import at.petrak.hexcasting.api.casting.mishaps.Mishap;
 import at.petrak.hexcasting.api.utils.TreeList;
 import at.petrak.hexcasting.common.lib.hex.HexActions;
 import at.petrak.hexcasting.xplat.IXplatAbstractions;
@@ -18,8 +20,10 @@ import li.cil.oc.api.machine.ExecutionResult;
 import li.cil.oc.api.machine.Machine;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
+import java.awt.*;
 import java.util.List;
 
 @Architecture.Name("Hexcasting")
@@ -48,6 +52,10 @@ public class HexcastingArchitecture implements Architecture {
 
     public long getMaxStackSize() {
         return this.maxStackSize;
+    }
+
+    public void mishap(Component mishap) {
+        this.error = mishap.getString();
     }
 
     @Override
@@ -96,6 +104,11 @@ public class HexcastingArchitecture implements Architecture {
 
         if (result.getNewData() != null)
             this.vm.setImage(result.getNewData());
+
+        for (OperatorSideEffect effect : result.getSideEffects()) {
+            if (effect instanceof OperatorSideEffect.DoMishap doMishap && doMishap.getMishap() instanceof Mishap mishap && doMishap.getErrorCtx() instanceof Mishap.Context context && mishap.errorMessageWithName(this.vm.getEnv(), context) instanceof Component component)
+                this.error = component.getString();
+        }
 
         this.vm.getEnv().postCast(this.vm.getImage());
         this.vm.getEnv().postExecution(result);

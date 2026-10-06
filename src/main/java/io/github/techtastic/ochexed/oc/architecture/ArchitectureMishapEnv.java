@@ -3,6 +3,7 @@ package io.github.techtastic.ochexed.oc.architecture;
 import at.petrak.hexcasting.api.casting.eval.MishapEnvironment;
 import li.cil.oc.api.machine.Machine;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
 public class ArchitectureMishapEnv extends MishapEnvironment {
@@ -12,6 +13,9 @@ public class ArchitectureMishapEnv extends MishapEnvironment {
         super((ServerLevel) machine.host().getEnvironmentLevel(), null);
         this.machine = machine;
     }
+
+    @Override
+    protected void yeetItem(ItemStack stack, Vec3 srcPos, Vec3 delta) {}
 
     @Override
     public void yeetHeldItemsTowards(Vec3 vec3) {}
