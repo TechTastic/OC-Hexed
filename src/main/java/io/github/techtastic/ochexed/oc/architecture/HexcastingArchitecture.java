@@ -2,6 +2,7 @@ package io.github.techtastic.ochexed.oc.architecture;
 
 import at.petrak.hexcasting.api.addldata.ADIotaHolder;
 import at.petrak.hexcasting.api.casting.eval.CastResult;
+import at.petrak.hexcasting.api.casting.eval.env.PlayerBasedCastEnv;
 import at.petrak.hexcasting.api.casting.eval.sideeffects.OperatorSideEffect;
 import at.petrak.hexcasting.api.casting.eval.vm.CastingImage;
 import at.petrak.hexcasting.api.casting.eval.vm.CastingVM;
@@ -10,6 +11,7 @@ import at.petrak.hexcasting.api.casting.eval.vm.SpellContinuation;
 import at.petrak.hexcasting.api.casting.iota.Iota;
 import at.petrak.hexcasting.api.casting.iota.PatternIota;
 import at.petrak.hexcasting.api.casting.mishaps.Mishap;
+import at.petrak.hexcasting.api.pigment.FrozenPigment;
 import at.petrak.hexcasting.api.utils.TreeList;
 import at.petrak.hexcasting.common.lib.hex.HexActions;
 import at.petrak.hexcasting.xplat.IXplatAbstractions;
@@ -22,19 +24,22 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
 import java.util.List;
 
 @Architecture.Name("Hexcasting")
 @Architecture.NoMemoryRequirements
 public class HexcastingArchitecture implements Architecture {
-    private final Machine machine;
 
+    private final Machine machine;
     private CastingVM vm;
     private SpellContinuation continuation;
+    private boolean enlightened = false;
+    private double ambitRadius = PlayerBasedCastEnv.DEFAULT_AMBIT_RADIUS;
+    private double sentinelRadius = PlayerBasedCastEnv.DEFAULT_SENTINEL_RADIUS;
+    private FrozenPigment pigment = FrozenPigment.DEFAULT.get();
     private long maxStackSize = 1024;
-
     private String error;
 
     public HexcastingArchitecture(Machine machine) {
@@ -54,8 +59,33 @@ public class HexcastingArchitecture implements Architecture {
         return this.maxStackSize;
     }
 
-    public void mishap(Component mishap) {
-        this.error = mishap.getString();
+    public boolean isEnlightened() {
+        return this.enlightened;
+    }
+
+    public double getAmbitRadius() {
+        return this.ambitRadius;
+    }
+
+    public void setAmbitRadius(double ambitRadius) {
+        this.ambitRadius = ambitRadius;
+    }
+
+    public double getSentinelRadius() {
+        return this.sentinelRadius;
+    }
+
+    public void setSentinelRadius(double sentinelRadius) {
+        this.sentinelRadius = sentinelRadius;
+    }
+
+    public FrozenPigment getPigment() {
+        return this.pigment;
+    }
+
+    public @Nullable FrozenPigment setPigment(FrozenPigment pigment) {
+        this.pigment = pigment;
+        return pigment;
     }
 
     @Override
@@ -129,14 +159,10 @@ public class HexcastingArchitecture implements Architecture {
     }
 
     @Override
-    public void onSignal() {
-
-    }
+    public void onSignal() {}
 
     @Override
-    public void onConnect() {
-
-    }
+    public void onConnect() {}
 
     @Override
     public void loadData(CompoundTag nbt) {
@@ -147,6 +173,14 @@ public class HexcastingArchitecture implements Architecture {
                 .ifSuccess(p -> this.vm.setImage(p.getFirst()));
         SpellContinuation.getCODEC().decode(NbtOps.INSTANCE, nbt.getCompound("continuation"))
                 .ifSuccess(p -> this.continuation = p.getFirst());
+        if (nbt.contains("enlightened"))
+            this.enlightened = nbt.getBoolean("enlightened");
+        if (nbt.contains("ambitRadius"))
+            this.ambitRadius = nbt.getDouble("ambitRadius");
+        if (nbt.contains("sentinelRadius"))
+            this.sentinelRadius = nbt.getDouble("sentinelRadius");
+        FrozenPigment.CODEC.decode(NbtOps.INSTANCE, nbt.getCompound("pigment"))
+                .ifSuccess(p -> this.pigment = p.getFirst());
     }
 
     @Override
@@ -157,5 +191,11 @@ public class HexcastingArchitecture implements Architecture {
         if (this.continuation != null)
             SpellContinuation.getCODEC().encodeStart(NbtOps.INSTANCE, this.continuation)
                 .ifSuccess(t -> nbt.put("continuation", t));
+        nbt.putBoolean("enlightened", this.enlightened);
+        nbt.putDouble("ambitRadius", this.ambitRadius);
+        nbt.putDouble("sentinelRadius", this.sentinelRadius);
+        if (this.pigment != null)
+            FrozenPigment.CODEC.encodeStart(NbtOps.INSTANCE, this.pigment)
+                    .ifSuccess(t -> nbt.put("pigment", t));
     }
 }
