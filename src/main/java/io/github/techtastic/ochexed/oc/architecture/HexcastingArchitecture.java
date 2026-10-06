@@ -20,18 +20,20 @@ import li.cil.oc.api.driver.item.Memory;
 import li.cil.oc.api.machine.Architecture;
 import li.cil.oc.api.machine.ExecutionResult;
 import li.cil.oc.api.machine.Machine;
+import li.cil.oc.api.prefab.AbstractManagedEnvironment;
+import li.cil.oc.server.component.Drone;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Architecture.Name("Hexcasting")
 @Architecture.NoMemoryRequirements
 public class HexcastingArchitecture implements Architecture {
-
     private final Machine machine;
     private CastingVM vm;
     private SpellContinuation continuation;
@@ -42,8 +44,12 @@ public class HexcastingArchitecture implements Architecture {
     private long maxStackSize = 1024;
     private String error;
 
+    private List<AbstractManagedEnvironment> apis = new ArrayList<>();
+
     public HexcastingArchitecture(Machine machine) {
         this.machine = machine;
+
+        this.apis.add(new OSEnvironment(this.machine));
     }
 
     private Iota loadInitialProgram() {
@@ -104,12 +110,17 @@ public class HexcastingArchitecture implements Architecture {
     public boolean initialize() {
         Iota program = loadInitialProgram();
         if (program != null) {
+            for (AbstractManagedEnvironment api : this.apis) {
+                this.machine.node().connect(api.node());
+            }
+
             this.vm = CastingVM.empty(new ArchitectureCastEnv(this.machine));
             this.vm.setImage(new CastingImage(TreeList.from(List.of(program)), this.vm.getImage().getParenCount(), this.vm.getImage().getParenthesized(), this.vm.getImage().getEscapeNext(), this.vm.getImage().getSimulateNext(), this.vm.getImage().getOpsConsumed(), this.vm.getImage().getComponents()));
             this.continuation = SpellContinuation.Done.INSTANCE.pushFrame(new FrameEvaluate(
                     TreeList.from(List.of(new PatternIota(HexActions.EVAL.value().prototype()))), false));
             return true;
         }
+
         return false;
     }
 
@@ -117,6 +128,11 @@ public class HexcastingArchitecture implements Architecture {
     public void close() {
         this.vm = null;
         this.continuation = null;
+
+        for (AbstractManagedEnvironment api : this.apis) {
+            this.machine.node().disconnect(api.node());
+        }
+        this.apis.clear();
     }
 
     @Override
