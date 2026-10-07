@@ -2,6 +2,7 @@
   "tab.ochexed.manual": "OC: Hexed",
 
   "ochexed.mishap.not_computer": "This pattern was used outside of a OpenComputers computer and outside of its Architecture!",
+  "ochexed.mishap.component.invoke.invalid": "Invalid invocation of method \"%s\" of the component at \"%s\" passing %s as arguments!",
   "hexcasting.action.computer.deny": "%s is explicitly denied for Architecture-native casting environments!",
 
   "ochexed.entry.architecture.basics": "Computer Architecture Basics",

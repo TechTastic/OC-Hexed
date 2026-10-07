@@ -6,6 +6,7 @@ import at.petrak.hexcasting.api.casting.iota.Iota;
 import at.petrak.hexcasting.api.casting.mishaps.Mishap;
 import at.petrak.hexcasting.api.casting.mishaps.MishapInternalException;
 import at.petrak.hexcasting.api.utils.TreeList;
+import io.github.techtastic.ochexed.casting.mishap.MishapInvalidComponentInvocation;
 import io.github.techtastic.ochexed.casting.mishap.MishapNotComputer;
 import io.github.techtastic.ochexed.oc.architecture.ArchitectureCastEnv;
 import io.github.techtastic.ochexed.util.IotaConversion;
@@ -32,7 +33,7 @@ public class OpComponentInvoke implements ConstMediaAction {
                 return Arrays.stream(arch.machine.invoke(address, method, args.map(IotaConversion::fromIota).toArray(new Object[0])))
                         .map(IotaConversion::toIota).toList();
             } catch (Exception e) {
-                throw new MishapInternalException(e);
+                throw new MishapInvalidComponentInvocation(address, method, args.map(IotaConversion::fromIota).toArray(new Object[0]));
             }
         }
         throw new MishapNotComputer();
