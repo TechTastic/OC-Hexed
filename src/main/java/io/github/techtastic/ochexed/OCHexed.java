@@ -5,7 +5,9 @@ import io.github.techtastic.ochexed.datagen.OCHHexActionTagProvider;
 import io.github.techtastic.ochexed.init.OCHActions;
 import io.github.techtastic.ochexed.oc.architecture.HexcastingArchitecture;
 import io.github.techtastic.ochexed.oc.convert.IoticConverter;
+import io.github.techtastic.ochexed.oc.driver.AkashicBookShelfDriver;
 import io.github.techtastic.ochexed.oc.driver.HexItemDriver;
+import io.github.techtastic.ochexed.oc.driver.SlateBlockDriver;
 import io.github.techtastic.ochexed.oc.gui.HexPatternImageProvider;
 import io.github.techtastic.ochexed.oc.gui.PatchouliImageProvider;
 import li.cil.oc.api.*;
@@ -45,6 +47,10 @@ public class OCHexed {
     private void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             Driver.add(new HexItemDriver());
+
+            Driver.add(new AkashicBookShelfDriver());
+            Driver.add(new SlateBlockDriver());
+
             Driver.add(IoticConverter.INSTANCE);
 
             Machine.add(HexcastingArchitecture.class);
