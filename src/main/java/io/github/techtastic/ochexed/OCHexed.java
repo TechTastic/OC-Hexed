@@ -45,7 +45,7 @@ public class OCHexed {
     private void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             Driver.add(new HexItemDriver());
-            Driver.add(new IoticConverter());
+            Driver.add(IoticConverter.INSTANCE);
 
             Machine.add(HexcastingArchitecture.class);
         });

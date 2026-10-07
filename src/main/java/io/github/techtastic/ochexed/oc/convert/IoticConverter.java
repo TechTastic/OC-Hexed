@@ -8,6 +8,8 @@ import net.minecraft.nbt.NbtOps;
 import java.util.Map;
 
 public class IoticConverter implements Converter {
+    public static final IoticConverter INSTANCE = new IoticConverter();
+
     @Override
     public void convert(Object value, Map<Object, Object> output) {
         if (value instanceof Iota iota)
