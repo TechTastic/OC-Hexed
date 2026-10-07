@@ -25,7 +25,7 @@ public class OpComponentInvoke implements ConstMediaAction {
     public @NotNull List<Iota> execute(@NotNull List<? extends Iota> list, @NotNull CastingEnvironment castingEnvironment) throws Mishap {
         if (castingEnvironment instanceof ArchitectureCastEnv arch) {
             String address = OperatorUtilsKt.getString(list, 0, this.getArgc());
-            String method = OperatorUtilsKt.getString((List<Iota>) list, 1, this.getArgc());
+            String method = OperatorUtilsKt.getString(list, 1, this.getArgc());
             TreeList<Iota> args = at.petrak.hexcasting.api.casting.OperatorUtils.getList(list, 2, this.getArgc());
             try {
                 return Arrays.stream(arch.machine.invoke(address, method, args.map(IotaConversion::fromIota).toArray(new Object[0]))).map(IotaConversion::toIota).toList();

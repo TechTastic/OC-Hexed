@@ -2,6 +2,7 @@
   "tab.ochexed.manual": "OC: Hexed",
 
   "ochexed.mishap.not_computer": "This pattern was used outside of a OpenComputers computer and outside of its Architecture!",
+  "hexcasting.action.computer.deny": "%s is explicitly denied for Architecture-native casting environments!",
 
   "ochexed.entry.architecture.basics": "Computer Architecture Basics",
   "ochexed.page.basics.architecture.intro": "TBD Intro",

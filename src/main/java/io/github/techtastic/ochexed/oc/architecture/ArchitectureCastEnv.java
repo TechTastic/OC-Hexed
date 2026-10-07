@@ -3,16 +3,22 @@ package io.github.techtastic.ochexed.oc.architecture;
 import at.petrak.hexcasting.api.HexAPI;
 import at.petrak.hexcasting.api.addldata.ADMediaHolder;
 import at.petrak.hexcasting.api.casting.ParticleSpray;
+import at.petrak.hexcasting.api.casting.PatternShapeMatch;
 import at.petrak.hexcasting.api.casting.eval.CastingEnvironment;
 import at.petrak.hexcasting.api.casting.eval.MishapEnvironment;
+import at.petrak.hexcasting.api.casting.mishaps.Mishap;
+import at.petrak.hexcasting.api.casting.mishaps.MishapDisallowedSpell;
 import at.petrak.hexcasting.api.pigment.FrozenPigment;
 import at.petrak.hexcasting.api.player.Sentinel;
 import at.petrak.hexcasting.api.utils.MediaHelper;
+import at.petrak.hexcasting.xplat.IXplatAbstractions;
+import io.github.techtastic.ochexed.init.OCHTags;
 import li.cil.oc.api.internal.Agent;
 import li.cil.oc.api.internal.Tablet;
 import li.cil.oc.api.machine.Machine;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -33,6 +39,14 @@ public class ArchitectureCastEnv extends CastingEnvironment {
         super((ServerLevel) machine.host().getEnvironmentLevel());
 
         this.machine = machine;
+    }
+
+    @Override
+    public void precheckAction(PatternShapeMatch match) throws Mishap {
+        ResourceLocation location = actionKey(match);
+        if (location != null && IXplatAbstractions.INSTANCE.getActionRegistry().getHolder(location).orElseThrow().is(OCHTags.Actions.DENY_COMPUTER))
+            throw new MishapDisallowedSpell("computer.deny", location);
+        super.precheckAction(match);
     }
 
     @Override

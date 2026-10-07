@@ -1,6 +1,7 @@
 package io.github.techtastic.ochexed;
 
 import at.petrak.hexcasting.common.lib.HexItems;
+import io.github.techtastic.ochexed.datagen.OCHHexActionTagProvider;
 import io.github.techtastic.ochexed.init.OCHActions;
 import io.github.techtastic.ochexed.oc.architecture.HexcastingArchitecture;
 import io.github.techtastic.ochexed.oc.convert.IoticConverter;
@@ -14,6 +15,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -31,8 +33,13 @@ public class OCHexed {
 
     public OCHexed(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::datagen);
 
         OCHActions.register(modEventBus);
+    }
+
+    private void datagen(GatherDataEvent event) {
+        event.addProvider(new OCHHexActionTagProvider(event.getGenerator().getPackOutput(), event.getLookupProvider()));
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
