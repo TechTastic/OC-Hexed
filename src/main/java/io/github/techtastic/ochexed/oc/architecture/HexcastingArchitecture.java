@@ -11,8 +11,10 @@ import at.petrak.hexcasting.api.casting.eval.vm.SpellContinuation;
 import at.petrak.hexcasting.api.casting.iota.Iota;
 import at.petrak.hexcasting.api.casting.iota.PatternIota;
 import at.petrak.hexcasting.api.casting.mishaps.Mishap;
+import at.petrak.hexcasting.api.client.HexPatternRenderHolder;
 import at.petrak.hexcasting.api.pigment.FrozenPigment;
 import at.petrak.hexcasting.api.utils.TreeList;
+import at.petrak.hexcasting.common.items.storage.ItemSpellbook;
 import at.petrak.hexcasting.common.lib.hex.HexActions;
 import at.petrak.hexcasting.xplat.IXplatAbstractions;
 import li.cil.oc.api.Driver;
@@ -55,7 +57,7 @@ public class HexcastingArchitecture implements Architecture {
     private Iota loadInitialProgram() {
         for (ItemStack stack : this.machine.host().internalComponents()) {
             ADIotaHolder holder = IXplatAbstractions.INSTANCE.findDataHolder(stack);
-            if (holder != null)
+            if (holder != null && !(stack.getItem() instanceof ItemSpellbook))
                 return holder.readIota();
         }
         return null;
