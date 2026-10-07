@@ -2,6 +2,7 @@ package io.github.techtastic.ochexed.oc.architecture;
 
 import at.petrak.hexcasting.api.HexAPI;
 import at.petrak.hexcasting.api.addldata.ADMediaHolder;
+import at.petrak.hexcasting.api.casting.ActionRegistryEntry;
 import at.petrak.hexcasting.api.casting.ParticleSpray;
 import at.petrak.hexcasting.api.casting.PatternShapeMatch;
 import at.petrak.hexcasting.api.casting.eval.CastingEnvironment;
@@ -17,6 +18,8 @@ import li.cil.oc.api.internal.Agent;
 import li.cil.oc.api.internal.Tablet;
 import li.cil.oc.api.machine.Machine;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -30,6 +33,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 public class ArchitectureCastEnv extends CastingEnvironment {
@@ -44,8 +48,13 @@ public class ArchitectureCastEnv extends CastingEnvironment {
     @Override
     public void precheckAction(PatternShapeMatch match) throws Mishap {
         ResourceLocation location = actionKey(match);
-        if (location != null && IXplatAbstractions.INSTANCE.getActionRegistry().getHolder(location).orElseThrow().is(OCHTags.Actions.DENY_COMPUTER))
-            throw new MishapDisallowedSpell("computer.deny", location);
+        Registry<ActionRegistryEntry> actions = IXplatAbstractions.INSTANCE.getActionRegistry();
+        if (location != null) {
+            Optional<Holder.Reference<ActionRegistryEntry>> opt = actions.getHolder(location);
+            if (opt.orElse(null) instanceof Holder.Reference<ActionRegistryEntry> holder)
+                if (holder.is(OCHTags.Actions.DENY_COMPUTER))
+                    throw new MishapDisallowedSpell("computer.deny", location);
+        }
         super.precheckAction(match);
     }
 
