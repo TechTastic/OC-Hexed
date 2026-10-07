@@ -1,8 +1,9 @@
 package io.github.techtastic.ochexed.oc.env;
 
 import at.petrak.hexcasting.api.addldata.ADIotaHolder;
-import at.petrak.hexcasting.api.casting.iota.Iota;
+import at.petrak.hexcasting.api.item.IotaHolderItem;
 import at.petrak.hexcasting.xplat.IXplatAbstractions;
+import io.github.techtastic.ochexed.util.IotaConversion;
 import li.cil.oc.api.Network;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
@@ -11,7 +12,6 @@ import li.cil.oc.api.network.EnvironmentHost;
 import li.cil.oc.api.network.Visibility;
 import li.cil.oc.api.prefab.AbstractManagedEnvironment;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
 
 public class IotaHolderEnvironment extends AbstractManagedEnvironment {
     private final EnvironmentHost host;
@@ -38,9 +38,7 @@ public class IotaHolderEnvironment extends AbstractManagedEnvironment {
 
     @Callback
     public Object[] writeIota(final Context context, final Arguments args) {
-        if (args.checkAny(0) instanceof Iota iota)
-            return new Object[] { this.holder.writeIota(iota, args.checkBoolean(1)) };
-        return new Object[] { false };
+        return new Object[] { this.holder.writeIota(IotaConversion.toIota(args.checkAny(0)), args.checkBoolean(1)) };
     }
 
     @Callback

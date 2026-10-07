@@ -6,6 +6,7 @@ import at.petrak.hexcasting.api.casting.iota.ListIota;
 import at.petrak.hexcasting.api.item.HexHolderItem;
 import at.petrak.hexcasting.api.pigment.FrozenPigment;
 import at.petrak.hexcasting.xplat.IXplatAbstractions;
+import io.github.techtastic.ochexed.util.IotaConversion;
 import li.cil.oc.api.Network;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
@@ -54,7 +55,7 @@ public class HexHolderEnvironment extends AbstractManagedEnvironment {
 
     @Callback
     public Object[] writeHex(final Context context, final Arguments args) {
-        if (args.checkAny(0) instanceof ListIota list)
+        if (IotaConversion.toIota(args.checkAny(0)) instanceof ListIota list)
             this.holder.writeHex(list.getList(), this.holder.getPigment(), this.holder instanceof HexHolderItem item ? item.getMedia(this.stack) : 0 );
         return new Object[0];
     }

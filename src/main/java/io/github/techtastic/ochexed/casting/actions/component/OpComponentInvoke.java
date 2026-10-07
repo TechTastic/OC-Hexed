@@ -9,6 +9,7 @@ import at.petrak.hexcasting.api.utils.TreeList;
 import io.github.techtastic.ochexed.casting.mishap.MishapNotComputer;
 import io.github.techtastic.ochexed.oc.architecture.ArchitectureCastEnv;
 import io.github.techtastic.ochexed.util.IotaConversion;
+import li.cil.oc.server.driver.Registry;
 import org.jetbrains.annotations.NotNull;
 import ram.talia.moreiotas.api.OperatorUtilsKt;
 
@@ -28,7 +29,9 @@ public class OpComponentInvoke implements ConstMediaAction {
             String method = OperatorUtilsKt.getString(list, 1, this.getArgc());
             TreeList<Iota> args = at.petrak.hexcasting.api.casting.OperatorUtils.getList(list, 2, this.getArgc());
             try {
-                return Arrays.stream(arch.machine.invoke(address, method, args.map(IotaConversion::fromIota).toArray(new Object[0]))).map(IotaConversion::toIota).toList();
+                return Arrays.stream(Registry.convert(
+                        arch.machine.invoke(address, method, args.toArray(new Object[0]))
+                )).map(IotaConversion::toIota).toList();
             } catch (Exception e) {
                 throw new MishapInternalException(e);
             }

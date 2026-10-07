@@ -11,6 +11,6 @@ public class IoticConverter implements Converter {
     @Override
     public void convert(Object value, Map<Object, Object> output) {
         if (value instanceof Iota iota)
-            IotaType.TYPED_CODEC.encodeStart(NbtOps.INSTANCE, iota).ifSuccess(nbt -> output.put("iota", nbt));
+            IotaType.TYPED_CODEC.encodeStart(NbtOps.INSTANCE, iota).ifSuccess(nbt -> output.put("iota", new NBTValue(nbt)));
     }
 }
