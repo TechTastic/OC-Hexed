@@ -28,12 +28,14 @@ public class OpComponentInvoke implements ConstMediaAction {
         if (castingEnvironment instanceof ArchitectureCastEnv arch) {
             String address = OperatorUtilsKt.getString(list, 0, this.getArgc());
             String method = OperatorUtilsKt.getString(list, 1, this.getArgc());
-            TreeList<Iota> args = at.petrak.hexcasting.api.casting.OperatorUtils.getList(list, 2, this.getArgc());
+            Object[] args = at.petrak.hexcasting.api.casting.OperatorUtils.getList(list, 2, this.getArgc())
+                    .map(IotaConversion::fromIota).toArray(new Object[0]);
             try {
-                return Arrays.stream(arch.machine.invoke(address, method, args.map(IotaConversion::fromIota).toArray(new Object[0])))
+                Object[] results = arch.machine.invoke(address, method, args);
+                return Arrays.stream(results)
                         .map(IotaConversion::toIota).toList();
             } catch (Exception e) {
-                throw new MishapInvalidComponentInvocation(address, method, args.map(IotaConversion::fromIota).toArray(new Object[0]));
+                throw new MishapInvalidComponentInvocation(address, method, args);
             }
         }
         throw new MishapNotComputer();
