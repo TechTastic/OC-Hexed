@@ -4,10 +4,7 @@ import at.petrak.hexcasting.api.casting.ActionRegistryEntry;
 import at.petrak.hexcasting.api.casting.math.HexDir;
 import at.petrak.hexcasting.api.casting.math.HexPattern;
 import at.petrak.hexcasting.common.lib.hex.HexActions;
-import io.github.techtastic.ochexed.casting.actions.component.OpComponentInvoke;
-import io.github.techtastic.ochexed.casting.actions.component.OpGetComponentMethods;
-import io.github.techtastic.ochexed.casting.actions.component.OpGetComponentType;
-import io.github.techtastic.ochexed.casting.actions.component.OpListComponents;
+import io.github.techtastic.ochexed.casting.actions.component.*;
 import io.github.techtastic.ochexed.casting.actions.signal.OpPopSignal;
 import io.github.techtastic.ochexed.casting.actions.signal.OpPushSignal;
 import net.neoforged.bus.api.IEventBus;
@@ -27,7 +24,7 @@ public class OCHActions {
             new ActionRegistryEntry(HexPattern.fromAngleString("qqqqaawadeeedewadeeed", HexDir.WEST), new OpGetComponentType()));
     // Find Component
     public static final DeferredHolder<ActionRegistryEntry, ActionRegistryEntry> FIND_COMPONENT = ACTIONS.register("find_component", () ->
-            new ActionRegistryEntry(HexPattern.fromAngleString("qqqqaawadeeede", HexDir.WEST), new OpListComponents()));
+            new ActionRegistryEntry(HexPattern.fromAngleString("qqqqaawadeeede", HexDir.WEST), new OpFindComponent()));
     // Get Methods
     public static final DeferredHolder<ActionRegistryEntry, ActionRegistryEntry> GET_COMPONENT_METHODS = ACTIONS.register("get_component_methods", () ->
             new ActionRegistryEntry(HexPattern.fromAngleString("qqqaawqqqae", HexDir.WEST), new OpGetComponentMethods()));
