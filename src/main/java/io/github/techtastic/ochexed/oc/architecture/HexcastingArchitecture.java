@@ -112,6 +112,7 @@ public class HexcastingArchitecture implements Architecture {
     public boolean initialize() {
         Iota program = loadInitialProgram();
         if (program != null) {
+            this.error = null;
             for (AbstractManagedEnvironment api : this.apis) {
                 this.machine.node().connect(api.node());
             }
@@ -146,9 +147,6 @@ public class HexcastingArchitecture implements Architecture {
                 this.vm.getEnv().getWorld(),
                 this.vm
         );
-
-        if (!result.getResolutionType().getSuccess())
-            this.error = result.getResolutionType().name();
 
         if (result.getNewData() != null)
             this.vm.setImage(result.getNewData());
