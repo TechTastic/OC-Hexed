@@ -120,7 +120,7 @@ public class HexcastingArchitecture implements Architecture {
             this.vm.setImage(new CastingImage(TreeList.from(List.of(program)), this.vm.getImage().getParenCount(), this.vm.getImage().getParenthesized(), this.vm.getImage().getEscapeNext(), this.vm.getImage().getSimulateNext(), this.vm.getImage().getOpsConsumed(), this.vm.getImage().getComponents()));
             this.continuation = SpellContinuation.Done.INSTANCE.pushFrame(new FrameEvaluate(
                     TreeList.from(List.of(new PatternIota(HexActions.EVAL.value().prototype()))), false));
-            return true;
+            return recomputeMemory(this.machine.host().internalComponents());
         }
 
         return false;
