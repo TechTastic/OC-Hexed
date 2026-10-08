@@ -3,6 +3,8 @@
 
   "ochexed.mishap.not_computer": "This pattern was used outside of a OpenComputers computer and outside of its Architecture!",
   "ochexed.mishap.component.invoke.invalid": "Invalid invocation of method \"%s\" of the component at \"%s\" passing %s as arguments!",
+  "ochexed.mishap.component.invalid": "There is no component with this address: \"%s\"",
+  "ochexed.mishap.component.invalid.method": "Invalid method of \"%s\" of the component at \"%s\"!",
   "hexcasting.action.computer.deny": "%s is explicitly denied for Architecture-native casting environments!",
 
   "ochexed.entry.architecture.basics": "Computer Architecture Basics",
