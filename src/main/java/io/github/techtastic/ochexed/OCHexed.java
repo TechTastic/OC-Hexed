@@ -5,6 +5,7 @@ import io.github.techtastic.ochexed.datagen.OCHHexActionTagProvider;
 import io.github.techtastic.ochexed.init.OCHActions;
 import io.github.techtastic.ochexed.oc.architecture.HexcastingArchitecture;
 import io.github.techtastic.ochexed.oc.convert.IoticConverter;
+import io.github.techtastic.ochexed.oc.driver.AbstractImpetusDriver;
 import io.github.techtastic.ochexed.oc.driver.AkashicBookShelfDriver;
 import io.github.techtastic.ochexed.oc.driver.HexItemDriver;
 import io.github.techtastic.ochexed.oc.driver.SlateBlockDriver;
@@ -50,6 +51,7 @@ public class OCHexed {
 
             Driver.add(new AkashicBookShelfDriver());
             Driver.add(new SlateBlockDriver());
+            Driver.add(new AbstractImpetusDriver());
 
             Driver.add(IoticConverter.INSTANCE);
 
